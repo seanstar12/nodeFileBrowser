@@ -15,8 +15,8 @@ app.listen(8089);
 
 filePath = '/storage/ School/';
 route = '/';
-allowHidden = false;
-allowSym = false;
+allowHidden = true;
+allowSym = false; //not safe. by adding a slash, it bypasses.
 
 app.get('*',verify, function (req,res) {
 
@@ -57,19 +57,20 @@ app.get('*',verify, function (req,res) {
 });
 
 function verify(req,res,next){
-  if (!allowSym)
+  if (!allowSym){
     magic.detectFile(filePath + req.params, function(err, result){
       if (result.indexOf('symlink') < 0) pass();
       else res.send('This is not the path you\'re looking for.');
     });
+  }
   else pass();
 
   function pass(){
-   if (allowHidden) next();
-   else if (/\/\./.test(req.params)) {
-     res.send('This is not the path you\'re looking for.');
-   }
-  else next();
+    if (allowHidden) next();
+    else if (/\/\./.test(req.params)) {
+      res.send('This is not the path you\'re looking for.');
+    }
+    else next();
   }
 }
 
