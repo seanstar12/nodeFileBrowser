@@ -27,6 +27,7 @@ Features
 
 Current:
 
+  * Working breadcrumbs (delicious...)
   * Ability to change port
   * Ability to allow / ban symlinks
   * Ability to allow / ban hidden files
