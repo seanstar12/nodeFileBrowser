@@ -54,7 +54,6 @@ app.get('*',verify, function (req,res) {
           
           magic.detectFile(filePath + _list[count].path, function(err, result){
             _list[count].type = result.split('/')[1];
-            console.log(result.split('/')[1]);
             _mmmCount++; //TODO: ASYNC Rocks! #Clean this up later.
             if (_mmmCount == _list.length){
               if (api) res.send(_list);
@@ -67,7 +66,8 @@ app.get('*',verify, function (req,res) {
                 for (var _i = 0; _i < req._PATH.length; _i++)
                   obj.path.push({link:tempPath+=req._PATH[_i] + '/', name:req._PATH[_i]});
 
-                res.render('index', obj);
+                //res.render('index', obj); //bad 'sluggish' layout
+                res.render('home', obj); //clean light layout
               }
             }
           });
