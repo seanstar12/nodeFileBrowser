@@ -1,6 +1,8 @@
 Description
 ===========
 
+![Imgur](http://i.imgur.com/7BIWfES "Screen Shot")
+
 A super simple web-based file manager written for node. Hopefully, this will be made modular so it can be dropped 
 into other projects at will.
 
@@ -19,6 +21,25 @@ Install
 
     npm install
 
+
+Features
+============
+
+Current:
+
+  * Ability to change port
+  * Ability to allow / ban symlinks
+  * Ability to allow / ban hidden files
+  * Set a custom directory.
+
+Future:
+
+  * Create users and manage permissions
+  * Create guest accounts with access timeouts
+  * Add a public folder / dropbox (can upload but cannot see files)
+  * Ability to upload / delete / rename / etc..
+  * Zip multiple files and download all at once
+  * + more?
 
 
 Use
