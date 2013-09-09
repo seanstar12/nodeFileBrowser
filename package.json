@@ -7,5 +7,6 @@
     "express": ">= 3.3.0",
     "express3-handlebars": ">= 0.5.0",
     "mmmagic": ">= 0.3.4"
-  }
+  },
+  "engine": "node >= 0.6.0"
 }
