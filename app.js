@@ -19,6 +19,7 @@ filePath = '/storage/ School';
 route = '/';
 allowHidden = false;    //work in progress
 allowSym = false;
+debug = false;
 
 var verify = [buildPath,symmCheck];
 
@@ -47,14 +48,26 @@ app.get('*',verify, function (req,res) {
 
         function getFileStats(count, _file){
           _file.stat(filePath + _list[count].path, function(err, fileStat){
-            _list[count].size = (fileStat.size / 1048576) + ' MB';
+            //_list[count].size = (fileStat.size / 1048576) + ' MB';
+            _list[count].size = fileStat.size + ' Bytes';
           });
           
           magic.detectFile(filePath + _list[count].path, function(err, result){
             _list[count].type = result.split('/')[1];
             _mmmCount++; //TODO: ASYNC Rocks! #Clean this up later.
             if (_mmmCount == _list.length){
-              res.send(_list);
+              if (debug) res.send(_list);
+              else {
+                var obj = {
+                  list: _list, path: [{link: '/', name: 'Casa' }]
+                }
+                
+                var tempPath = '/';
+                for (var _i = 0; _i < req._PATH.length; _i++)
+                  obj.path.push({link:tempPath+=req._PATH[_i] + '/', name:req._PATH[_i]});
+
+                res.render('home', obj);
+              }
             }
           });
         }

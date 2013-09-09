@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+  <html lang="en-US">
+    <head>
+      <title>Toph</title>
+      <link rel="stylesheet" type="text/css" href="/css/app.css">
+      <meta http-equiv="x-ua-compatible" content="IE=edge" />
+      <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="apple-touch-fullscreen" content="yes">
+    </head>
+    <body>
+    <div id="content" class="snap-content">
+      <div id="toolbar">
+        <h1>Toph's Files</h1>
+      </div>
+      <div id='stuff'>
+        <ul class="bread">
+          {{#each path}}
+            {{> page/breadcrumb }}
+          {{/each}}
+        </ul>
+        <ul class='fileList'>
+          {{#each list}}
+            {{> page/file }}
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+    {{> page/scripts }}
+  </body>
+</html>

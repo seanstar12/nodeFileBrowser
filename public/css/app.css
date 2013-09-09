@@ -1,0 +1,49 @@
+body {
+  display: block;
+  background-color: #fff;
+}
+
+a, a:visited {
+  color: #333;
+  text-decoration: none;
+}
+
+.breadCrumb {
+  display: inline-block;
+}
+
+.breadCrumb a {
+  text-decoration:none;
+  color: #000;
+}
+
+.fileSize {
+  color: #777;
+  font-size: 10px;
+}
+
+.fileList {
+  max-width: 600px;
+}
+
+.fileList .fileSize {
+  float: right;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0px;
+}
+
+ul li.fileListItem {
+  padding-top: 5px;
+}
+
+ul li.fileListItem.hiddenFile {
+  color: #A7A7A7;
+}
+
+ul li.fileListItem.hiddenFolder {
+  color: #A7A7A7;
+}
+
