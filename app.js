@@ -1,6 +1,7 @@
 var express = require('express'),
     exphbs = require('express3-handlebars'),
     fs = require('fs'),
+    util = require('util'),
     mmm = require('mmmagic'),
     Magic = mmm.Magic,
     magic = new Magic(mmm.MAGIC_MIME_TYPE),
@@ -22,7 +23,6 @@ allowSym = false;
 var verify = [buildPath,symmCheck];
 
 app.get('*',verify, function (req,res) {
-
   fs.stat(filePath + req._PATHSTR , function(err, stats){
     if (err) {
       if (err.code == 'ENOENT') res.send(['Doesn\'t Exist']);
@@ -32,15 +32,33 @@ app.get('*',verify, function (req,res) {
       fs.readdir(filePath + req._PATHSTR, function(err, files){
         var _list = [];
         files = files.sort();
-
         for (var i = 0; i < files.length; i++){
           var _url = '';
-
           if (hidden(/^\./,files[i])) {
-            _list.push({name:files[i],path:req._PATHSTR+'/'+files[i]});
+            _list.push({name:files[i],type:'',size:0,path:req._PATHSTR+'/'+files[i]});
           }
         }
-        res.send(_list);
+
+        var _count = 0, _mmmCount=0;
+        for (var i = 0; i < _list.length; i++){
+          getFileStats(_count,fs);
+          _count++;
+        }
+
+        function getFileStats(count, _file){
+          _file.stat(filePath + _list[count].path, function(err, fileStat){
+            _list[count].size = (fileStat.size / 1048576) + ' MB';
+          });
+          
+          magic.detectFile(filePath + _list[count].path, function(err, result){
+            _list[count].type = result.split('/')[1];
+            _mmmCount++; //TODO: ASYNC Rocks! #Clean this up later.
+            if (_mmmCount == _list.length){
+              res.send(_list);
+            }
+          });
+        }
+
       });
     } else if (stats.isFile()){
       magic.detectFile(filePath + req._PATHSTR, function(err,result){
