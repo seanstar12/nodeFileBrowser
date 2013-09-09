@@ -1,12 +1,11 @@
 {{#if path}}
   <li class="fileListItem">
-    <div class="body">
-      <span class="file {{type}}">
-        <a href="{{path}}">{{name}}</a>
-      </span>
-      <span class="fileSize">
-        {{size}}
-      </span>
-    </div>
+    <a href="{{path}}">
+      <img src="/images/{{type}}.png" alt="{{type}}">
+      <div class="file-meta">
+        <h3>{{name}}</h3>
+        <span class="fileSize">{{size}}</span>
+      </div>
+    </a>
   </li>
 {{/if}}
