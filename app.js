@@ -19,7 +19,7 @@ filePath = '/storage/ School';
 route = '/';
 allowHidden = false;    //work in progress
 allowSym = false;
-debug = false;
+api = false;
 
 var verify = [buildPath,symmCheck];
 
@@ -56,7 +56,7 @@ app.get('*',verify, function (req,res) {
             _list[count].type = result.split('/')[1];
             _mmmCount++; //TODO: ASYNC Rocks! #Clean this up later.
             if (_mmmCount == _list.length){
-              if (debug) res.send(_list);
+              if (api) res.send(_list);
               else {
                 var obj = {
                   list: _list, path: [{link: '/', name: 'Casa' }]
