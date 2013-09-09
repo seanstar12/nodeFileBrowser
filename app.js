@@ -101,12 +101,12 @@ function symmCheck(req,res,next){
       str += '/' + req._PATH[i];
       magic.detectFile(filePath + str, function(err, result){
         cnt++;
-        if (err) res.send(['Doesn\'t exist']);
+        if (err) res.send(404,{code:404,msg:'Your request is bad, and you should feel bad.'});
         else {
           if (result.indexOf('symlink') >= 0 ) bool = false;
           if (cnt ==  req._PATH.length) {
             if (bool) next();
-            else res.send('This is not the path you\'re looking for.');
+            else res.send(401,{code:401,msg:'Your request is denied, and you should feel denied.'});
           }
         }
       });
