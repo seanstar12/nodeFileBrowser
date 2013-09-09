@@ -1,11 +1,11 @@
 {
   "name": "nodeFileBrowser",
-  "description": "An easy web file manager"
+  "description": "An easy web file manager. Intended for another project, but it's being built solo too.",
   "main": "app.js",  
   "version": "0.0.1",
   "dependencies": {
-    "express": "*",
-    "express3-handlebars": "*",
-    "mmmagic": "*"
+    "express": ">= 3.3.0",
+    "express3-handlebars": ">= 0.5.0",
+    "mmmagic": ">= 0.3.4"
   }
 }
