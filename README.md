@@ -23,7 +23,7 @@ Install
 
   Or a one-liner
 
-    git clone https://github.com/seanstar12/nodeFileBrowser.git; cd nodeFileBroswer; npm install
+    git clone https://github.com/seanstar12/nodeFileBrowser.git; cd nodeFileBrowser; npm install
 
 Features
 ============
