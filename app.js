@@ -8,6 +8,16 @@ var express = require('express'),
     magic = new Magic(mmm.MAGIC_MIME_TYPE),
     app = express();
 
+var confExists = fs.existsSync(__dirname + '/config');
+
+  if (confExists) {
+    console.log('exists');
+  } else {
+    console.log('No config, creating one for you');
+    fs.createReadStream(__dirname + '/config.examp').pipe(fs.createWriteStream(__dirname + '/config'));
+  }
+  var conf = require('./config');
+
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -16,11 +26,12 @@ app.use(express.static('public/'));
 app.use(express.favicon(__dirname + '/public/favicon.ico', { maxAge: 2592000000 }));
 app.listen(8089);
 
-filePath = '/storage/ School';
-route = '/';
-allowHidden = false;    //work in progress
-allowSym = false;
-api = false; //change for 'api mode'
+filePath = conf.filePath;
+route = conf.route;
+allowHidden = conf.allowHidden;
+allowSym = conf.allowSym;
+api = conf.api;
+homeName = conf.homeName;
  
 var verify = [buildPath,symmCheck];  //middleware
 
@@ -60,7 +71,7 @@ app.get('*',verify, function (req,res) {
               if (api) res.send(_list);
               else {
                 var obj = {
-                  list: _list, path: [{link: '/', name: 'Casa' }], total:_list.length
+                  list: _list, path: [{link: '/', name: homeName }], total:_list.length
                 }
                 
                 var tempPath = '/';

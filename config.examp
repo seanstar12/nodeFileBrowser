@@ -1,0 +1,8 @@
+var config = module.exports = {
+  homeName : 'Home',
+  filePath : '/storage/ School',
+  route : '/',
+  allowHidden : false,
+  allowSym: false,
+  api : false
+}
