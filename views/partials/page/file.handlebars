@@ -1,10 +1,8 @@
 {{#if path}}
-  <li class="fileListItem">
+  <li class="list-group-item">
     <a href="{{path}}">
-      <div class="file">
-        {{name}}
-        <span class="fileSize">{{size}}</span>
-      </div>
+      {{name}}
     </a>
+    <span class="pull-right hidden-xs">{{size}}</span>
   </li>
 {{/if}}

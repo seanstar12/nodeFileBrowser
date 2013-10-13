@@ -1,3 +1,5 @@
-<li class="breadCrumb">
-  <a href='{{link}}'>{{name}}/</a>
-</li>
+{{#if $last}}
+  <li>{{name}}</li>
+{{else}}
+  <li><a href="{{link}}">{{name}}</a></li>
+{{/if}}
