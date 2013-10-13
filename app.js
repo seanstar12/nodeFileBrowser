@@ -2,6 +2,7 @@ var express = require('express'),
     exphbs = require('express3-handlebars'),
     fs = require('fs'),
     util = require('util'),
+    humanize = require('humanize'),
     mmm = require('mmmagic'),
     Magic = mmm.Magic,
     magic = new Magic(mmm.MAGIC_MIME_TYPE),
@@ -49,7 +50,7 @@ app.get('*',verify, function (req,res) {
         function getFileStats(count, _file){
           _file.stat(filePath + _list[count].path, function(err, fileStat){
             //_list[count].size = (fileStat.size / 1048576) + ' MB';
-            _list[count].size = fileStat.size + ' Bytes';
+            _list[count].size = humanize.filesize(fileStat.size);
           });
           
           magic.detectFile(filePath + _list[count].path, function(err, result){
