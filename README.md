@@ -1,7 +1,7 @@
 Description
 ===========
 
-![Imgur](http://i.imgur.com/7BIWfES.png "Screen Shot")
+![Imgur](http://i.imgur.com/nRPbROd.png "Screen Shot")
 
 A super simple web-based file manager written for node. Hopefully, this will be made modular so it can be dropped 
 into other projects at will.
