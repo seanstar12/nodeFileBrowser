@@ -21,6 +21,9 @@ Install
 
     npm install
 
+  Or a one-liner
+
+    git clone https://github.com/seanstar12/nodeFileBrowser.git; cd nodeFileBroswer; npm install
 
 Features
 ============
