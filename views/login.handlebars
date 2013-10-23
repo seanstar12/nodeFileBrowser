@@ -10,16 +10,19 @@
   </head>
   <body>
     <div class="container">
-    <form class="form-signin">
+    <form class="form-signin" action="/login" method="post">
       <h2 class="form-signin-heading">Toph's File Storage</h2>
-      <input type="text" class="form-control" placeholder="User Name" autofocus="">
-      <input type="password" class="form-control" placeholder="Password">
-      <label class="checkbox">
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
+      {{#if err}}
+        <div class="alert alert-danger">
+          <h4>{{desc}}</h4>
+            <p>{{msg}}</p>
+        </div>
+      {{/if}}
+      <input name="user" type="text" class="form-control" placeholder="User Name" autofocus="">
+      <input name="pass" type="password" class="form-control" placeholder="Password">
+      <br>
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>
-    <span><br/><a href="/createAccount">Or create an account because robots are lame...</a></span>
     </div>
     {{> page/scripts }}
   </body>

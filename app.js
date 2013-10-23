@@ -21,10 +21,11 @@ var confExists = fs.existsSync(__dirname + '/config');
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
-app.use(express.cookieParser());
+app.use(express.cookieParser('pikachu'));
+app.use(express.bodyParser());
 app.use(express.static('public/'));
 app.use(express.favicon(__dirname + '/public/favicon.ico', { maxAge: 2592000000 }));
-app.listen(8089);
+app.listen(8092);
 
 filePath = conf.filePath;
 route = conf.route;
@@ -35,85 +36,127 @@ homeName = conf.homeName;
  
 var verify = [buildPath,symmCheck];  //middleware
 
-app.get('*',verify, function (req,res) {
-  fs.stat(filePath + req._PATHSTR , function(err, stats){
-    if (err) {
-      if (err.code == 'ENOENT') res.send(['Doesn\'t Exist']);
-      else throw err;
-    }
-    else if (stats.isDirectory()) {
-      fs.readdir(filePath + req._PATHSTR, function(err, files){
-        var _list = [];
-        files = files.sort();
-        for (var i = 0; i < files.length; i++){
-          var _url = '';
-          if (hidden(/^\./,files[i])) {
-            _list.push({name:files[i],type:'',size:0,path:req._PATHSTR+'/'+files[i]});
-          }
-        }
+app.get('/robots.txt', function(req, res){
+  res.setHeader('Content-Type', 'text/plain');
+  res.send('User-agent: *\nDisallow: /');
+});
 
-        var _count = 0, _mmmCount=0;
-        for (var i = 0; i < _list.length; i++){
-          getFileStats(_count,fs);
-          _count++;
-        }
+app.get('/login', function(req,res){
+  res.render('login');
+});
 
-        function getFileStats(count, _file){
-          _file.stat(filePath + _list[count].path, function(err, fileStat){
-            //_list[count].size = (fileStat.size / 1048576) + ' MB';
-            _list[count].size = humanize.filesize(fileStat.size);
-          });
-          
-          magic.detectFile(filePath + _list[count].path, function(err, result){
-            _list[count].type = result.split('/')[1];
-            _mmmCount++; //TODO: ASYNC Rocks! #Clean this up later.
-            if (_mmmCount == _list.length){
-              if (api) res.send(_list);
-              else {
-                var obj = {
-                  list: _list, path: [{link: '/', name: homeName }], total:_list.length
-                }
-                
-                var tempPath = '/';
-                for (var _i = 0; _i < req._PATH.length; _i++)
-                  obj.path.push({link:tempPath+=req._PATH[_i] + '/', name:req._PATH[_i]});
+app.post('/login', function(req,res){
+  if (req.body.user == '' && req.body.pass == ''){
+    res.cookie('isCool', 'true', {signed: true,maxAge: 86409000*365*10, httpOnly: true});
+    res.redirect('/');
+  } else {
+    res.render('login', {err:true, desc:"Nope.", msg:"Leave it blank. Trust me, I'm an engineer."});
+  }
+});
 
-                //res.render('index', obj); //bad 'sluggish' layout
-                obj.helpers = {
-                  foreach: function(arr, options) {
-                    if(options.inverse && !arr.length)
-                      return options.inverse(this);
-
-                    return arr.map(function(item,index) {
-                      item.$index = index;
-                      item.$first = index === 0;
-                      item.$last  = index === arr.length-1;
-                      return options.fn(item);
-                    }).join('');
-                  }
-                };
-                res.render('index', obj); //clean light layout
-              }
-            }
-          });
-        }
-
-      });
-    } else if (stats.isFile()){
-      magic.detectFile(filePath + req._PATHSTR, function(err,result){
-        if (err) throw err; 
-        else {
-          res.writeHead(200, {
-            'Content-Type': result,
-            'Content-Length': stats.size
-          });
-          var readStream = fs.createReadStream(filePath + req._PATHSTR);
-          readStream.pipe(res);
-          console.log(Date.now() + '  ' + filePath + req._PATHSTR);
-        }
-      });
+app.get('/log', function(req,res){
+  fs.readFile('log.txt', '', function(err, data){
+    if (err) throw err;
+    else {
+      res.setHeader('Content-Type', 'text/plain');
+      res.send(data);
     }
   });
+});
+
+app.get('/*',verify, function (req,res) {
+  if (!req.signedCookies.isCool){
+    res.redirect('/login');
+  } else {
+    fs.stat(filePath + req._PATHSTR , function(err, stats){
+      if (err) {
+        if (err.code == 'ENOENT') res.send(['Doesn\'t Exist']);
+        else throw err;
+      }
+      else if (stats.isDirectory()) {
+        fs.readdir(filePath + req._PATHSTR, function(err, files){
+          var _list = [];
+          files = files.sort();
+          for (var i = 0; i < files.length; i++){
+            var _url = '';
+            if (hidden(/^\./,files[i])) {
+              _list.push({name:files[i],type:'',size:0,path:req._PATHSTR+'/'+files[i]});
+            }
+          }
+
+          var _count = 0, _mmmCount=0;
+          for (var i = 0; i < _list.length; i++){
+            getFileStats(_count,fs);
+            _count++;
+          }
+
+          function getFileStats(count, _file){
+            _file.stat(filePath + _list[count].path, function(err, fileStat){
+              _list[count].size = humanize.filesize(fileStat.size);
+            });
+            
+            magic.detectFile(filePath + _list[count].path, function(err, result){
+              _list[count].type = result.split('/')[1];
+              _mmmCount++; //TODO: ASYNC Rocks! #Clean this up later.
+              if (_mmmCount == _list.length){
+                if (api) res.send(_list);
+                else {
+                  var obj = {
+                    list: _list, path: [{link: '/', name: homeName }], total:_list.length
+                  }
+                  
+                  var tempPath = '/';
+                  for (var _i = 0; _i < req._PATH.length; _i++)
+                    obj.path.push({link:tempPath+=req._PATH[_i] + '/', name:req._PATH[_i]});
+
+                  obj.helpers = {
+                    foreach: function(arr, options) {
+                      if(options.inverse && !arr.length)
+                        return options.inverse(this);
+
+                      return arr.map(function(item,index) {
+                        item.$index = index;
+                        item.$first = index === 0;
+                        item.$last  = index === arr.length-1;
+                        return options.fn(item);
+                      }).join('');
+                    }
+                  };
+                  res.render('index', obj); //clean light layout
+                }
+              }
+            });
+          }
+
+        });
+      } else if (stats.isFile()){
+        magic.detectFile(filePath + req._PATHSTR, function(err,result){
+          if (err) throw err; 
+          else {
+            res.writeHead(200, {
+              'Content-Type': result,
+              'Content-Length': stats.size
+            });
+            var readStream = fs.createReadStream(filePath + req._PATHSTR);
+            readStream.pipe(res);
+            var str = Date.now() +' | ' + req.connection.remoteAddress + ' | ' + filePath + req._PATHSTR;
+            //console.log(str);
+            if (fs.existsSync('log.txt')){
+              fs.appendFile('log.txt', str + '\n', function(err){
+                if (err) throw err;
+                else console.log(str);
+              });
+            } else {
+              fs.writeFile('log.txt',str +'\n', function(err){
+                if (err) throw err;
+                else console.log(str);
+              });
+            }
+          }
+        });
+      }
+    });
+  }
 });
 
 function buildPath(req,res,next){
