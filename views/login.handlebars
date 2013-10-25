@@ -12,9 +12,9 @@
     <div class="container">
     <form class="form-signin" action="/login" method="post">
       <h2 class="form-signin-heading">Toph's File Storage</h2>
-      {{#if err}}
-        <div class="alert alert-danger">
-          <h4>{{desc}}</h4>
+      {{#if title}}
+        <div class="alert {{type}}">
+          <h4>{{title}}</h4>
             <p>{{msg}}</p>
         </div>
       {{/if}}

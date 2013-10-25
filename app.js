@@ -49,12 +49,19 @@ app.get('/login', function(req,res){
   }
 });
 
+app.get('/logout', function(req,res){
+  if (req.signedCookies.isCool){
+    res.clearCookie('isCool');
+    res.redirect('/');
+  } else res.redirect('/');
+});
+
 app.post('/login', function(req,res){
   if (req.body.user == '' && req.body.pass == ''){
     res.cookie('isCool', 'true', {signed: true,maxAge: 86409000*365*10, httpOnly: true});
     res.redirect('/');
   } else {
-    res.render('login', {err:true, desc:"Nope.", msg:"Leave it blank. Trust me, I'm an engineer."});
+    res.render('login', {title:"Nope.", msg:"Leave it blank. Trust me, I'm an engineer.", type:"alert-warning"});
   }
 });
 
