@@ -42,7 +42,11 @@ app.get('/robots.txt', function(req, res){
 });
 
 app.get('/login', function(req,res){
-  res.render('login');
+  if (req.signedCookies.isCool){
+    res.redirect('/');
+  } else {
+    res.render('login');
+  }
 });
 
 app.post('/login', function(req,res){
