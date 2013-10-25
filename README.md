@@ -45,6 +45,13 @@ Future:
   * Zip multiple files and download all at once
   * + more?
 
+Chopping Block (My todo list):
+
+  * Rework '/' to a function based operation
+  * Need to finalize signup page
+  * Add proper routes to handle/manage users
+  * Setup some sort of DB and get rid of config file
+  * Bug: Fails to load on empty directory
 
 Use
 ============
