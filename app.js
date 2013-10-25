@@ -65,6 +65,20 @@ app.post('/login', function(req,res){
   }
 });
 
+app.get('/signup', function(req,res){
+  res.render('signup');
+});
+
+app.post('/signup', function(req,res){
+  var obj = {
+    msg: 'fuck yeah, you\'re awesome',
+    email: req.body.email,
+    pass: req.body.pass,
+    remember: req.body.remember
+  }
+  res.send(obj);
+});
+
 app.get('/log', function(req,res){
   fs.readFile('log.txt', '', function(err, data){
     if (err) throw err;

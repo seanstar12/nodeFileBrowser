@@ -10,6 +10,12 @@
   </head>
   <body>
     <div class="container">
+      {{#if msg}}
+        <div class="alert {{type}}">
+          <h4>{{msgTitle}}</h4>
+            <p>{{msg}}</p>
+        </div>
+      {{/if}}
       <ol class="breadcrumb">
         {{#foreach path}}
           {{> page/breadcrumb }}
