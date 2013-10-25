@@ -48,6 +48,7 @@ Future:
 Chopping Block (My todo list):
 
   * Rework '/' to a function based operation
+  * Change the reading of filetypes to a list of known types
   * Need to finalize signup page
   * Add proper routes to handle/manage users
   * Setup some sort of DB and get rid of config file
