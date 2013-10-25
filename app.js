@@ -58,26 +58,31 @@ app.get('/logout', function(req,res){
 });
 
 app.post('/login', function(req,res){
-  if (req.body.user == '' && req.body.pass == ''){
+  if (req.body.email == '' && req.body.pass == ''){
     res.cookie('isCool', 'true', {signed: true,maxAge: 86409000*365*10, httpOnly: true});
     res.redirect('/');
   } else {
-    res.render('login', {title:"Nope.", msg:"Leave it blank. Trust me, I'm an engineer.", type:"alert-warning"});
+    res.render('login', {
+      title:"Wrong", 
+      msg:"Leave the form blank. Trust me, I'm an engineer.", 
+      type:"alert-danger",
+      email: req.body.email || ''
+    });
   }
 });
 
 app.get('/signup', function(req,res){
-  res.render('signup');
+  res.render('signup', {verify:true,human:'What is 7*7+2?'});
 });
 
 app.post('/signup', function(req,res){
   var obj = {
-    msg: 'fuck yeah, you\'re awesome',
     email: req.body.email,
     pass: req.body.pass,
-    remember: req.body.remember
+    remember: req.body.remember,
+    type: req.body.type
   }
-  res.send(obj);
+  res.send(req.body);
 });
 
 app.get('/log', function(req,res){
