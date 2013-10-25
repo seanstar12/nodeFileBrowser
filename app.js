@@ -21,7 +21,7 @@ var confExists = fs.existsSync(__dirname + '/config');
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
-app.use(express.cookieParser('pikachu'));
+app.use(express.cookieParser(conf.cookieSecret || 'pikachu'));
 app.use(express.bodyParser());
 app.use(express.static('public/'));
 app.use(express.favicon(__dirname + '/public/favicon.ico', { maxAge: 2592000000 }));
@@ -183,12 +183,18 @@ function symmCheck(req,res,next){
       str += '/' + req._PATH[i];
       magic.detectFile(filePath + str, function(err, result){
         cnt++;
-        if (err) res.send(404,{code:404,msg:'Your request is bad, and you should feel bad.'});
+        if (err) {
+          var readStream = fs.createReadStream('public/bad.txt');
+          readStream.pipe(res);
+        }
         else {
           if (result.indexOf('symlink') >= 0 ) bool = false;
           if (cnt ==  req._PATH.length) {
             if (bool) next();
-            else res.send(401,{code:401,msg:'Your request is denied, and you should feel denied.'});
+            else {
+              var readStream = fs.createReadStream('public/denied.txt');
+              readStream.pipe(res);
+            }
           }
         }
       });
@@ -201,4 +207,13 @@ function hidden(exp,str){
   if (allowHidden) return true;
   else if (exp.test(str)) return false;
   else return true;
+}
+
+function writePipe(req, res, filePath){
+  res.writeHead(200, {
+    'Content-Type': result,
+    'Content-Length': stats.size
+  });
+  var readStream = fs.createReadStream(filePath);
+  readStream.pipe(res);
 }
