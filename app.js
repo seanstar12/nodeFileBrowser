@@ -1,5 +1,5 @@
 var express = require('express'),
-    exphbs = require('express3-handlebars'),
+    exphbs = require('express-handlebars'),
     fs = require('fs'),
     util = require('util'),
     humanize = require('humanize'),
@@ -24,7 +24,6 @@ app.set('view engine', 'handlebars');
 app.use(cookieParser(conf.cookieSecret || 'pikachu'));
 app.use(bodyParser());
 app.use(express.static('public/'));
-app.listen(8092);
 
 filePath = conf.filePath;
 route = conf.route;
@@ -33,6 +32,7 @@ allowSym = conf.allowSym;
 api = conf.api;
 homeName = conf.homeName;
  
+app.listen(conf.port);
 var verify = [buildPath];  //middleware
 
 app.get('/robots.txt', function(req, res){
@@ -81,7 +81,7 @@ app.get('/*',verify, function (req,res) {
       fs.readdir(obj.path, function(err, files) {
         var _list = [];
         files = files.sort();
-        if ( obj.path != filePath) _list.push({name:"...",type:'',size:0,path:req._PATHSTR+'/../'});
+        if ( obj.path != filePath) _list.push({name:"...",type:'',size:"",path:req._PATHSTR+'/../'});
         for (var i = 0; i < files.length; i++){
           var _url = '';
           if (hidden(/^\./,files[i])) {

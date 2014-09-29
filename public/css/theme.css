@@ -1,15 +1,5 @@
 body {
   padding-top: 10px;
   padding-bottom: 10px;
-  background-color: #000;
 }
 
-a, a:visited, a:hover{
-  color: #00F714;
-  text-decoration: none;
-  font-family: 'Courier New', Courier, monospace;
-}
-.list-group-item {
-  background-color: #000;
-  border: 1px dashed #0C2906;
-}
