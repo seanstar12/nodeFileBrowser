@@ -23,16 +23,17 @@ Install
 
   Or a one-liner
 
-    git clone https://github.com/seanstar12/nodeFileBrowser.git; cd nodeFileBrowser; npm install
+    git clone https://github.com/seanstar12/nodeFileBrowser.git && cd nodeFileBrowser && npm install
 
 Features
 ============
 
+Update:
+  * I actually wrote a ton more features, but due to not commiting, I lost it during a server upgrade.
+  * Now that this actually has folowers, I'll commit when I create.
+
 Current:
 
-  * Working breadcrumbs (delicious...)
-  * Ability to change port
-  * Ability to allow / ban symlinks
   * Ability to allow / ban hidden files
   * Set a custom directory.
 
