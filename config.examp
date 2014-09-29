@@ -2,6 +2,7 @@ var config = module.exports = {
   homeName : 'Home',
   filePath : '/storage/\ School',
   route : '/',
+  port : 8092,
   allowHidden : false,
   allowSym: false,
   api : false
